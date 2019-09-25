@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose -v convert
+    kompose.version: 1.18.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app
+  name: app
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: app
+    spec:
+      containers:
+      - env:
+        - name: FLASK_APP
+          value: app.py
+        - name: FLASK_DEBUG
+          value: "1"
+        - name: FLASK_ENV
+          value: development
+        image: app
+        name: app
+        ports:
+        - containerPort: 5000
+        resources: {}
+        volumeMounts:
+        - mountPath: /app
+          name: app-claim0
+      restartPolicy: Always
+      volumes:
+      - name: app-claim0
+        persistentVolumeClaim:
+          claimName: app-claim0
+status: {}

@@ -1,11 +1,17 @@
-# Simple Python Service in a docker container.
-docker-compose up -d
+# Simple Python Service in a docker container and orchestrated by kubernetes.
+## Setup
+1. git clone git@github.com:rbrisita/plq.git
+1. cd plq
+1. docker-compose up -d
 
-Visit Docker's IP with Port to view index page to test Pig Lating Query.
+## Usage
+Visit Docker's IP with Port to view index page to test Pig Latin Query.
 
 # Testing Client
-virtualenv venv
-source venv/bin/activate
-pip install -r cli_requirements.txt
+## Setup
+1. virtualenv venv
+1. source venv/bin/activate
+1. pip install -r cli_requirements.txt
 
+## Usage
 python3 cli.py <ip:port> <pig_latin_query>
