@@ -1,5 +1,5 @@
-from flask import Flask, escape, request, render_template, jsonify
-import re, string
+from flask import Flask, render_template, jsonify
+import re
 import urllib.parse
 
 app = Flask(__name__)
@@ -8,37 +8,51 @@ suffix = 'ay'
 
 
 def arrangeConsonantWord(word):
+    '''
+    Using given word find where to re-arrange for Pig Latin.
+    '''
     for i, letter in enumerate(word[1:], start=1):
         if letter.upper() in vowel_list:
             first_letter = word[i].upper() if word[0].isupper() else word[i]
             return first_letter + word[i + 1:] + word[0:i].lower() + suffix
-    return word[1:] + word[0] + suffix
+    return word[1].upper() + word[2:].lower() + word[0].lower() + suffix
 
 
 def convertToPigLatin(word):
+    '''
+    Check if given word start with a vowel otherwise pass it on.
+    '''
     if word[0].upper() in vowel_list:
         return word + suffix
 
     return arrangeConsonantWord(word)
 
 
+# API Routes
+
+
 @app.route('/')
 def index():
+    '''
+    Render index page which allows users to make Ajax calls to API.
+    '''
     return render_template('index.html')
 
 
 @app.route('/api/plq/<plq_str>/')
 def convertPLQ(plq_str):
-    # query_str = request.args.get('q', 'Hello, my name is Alice.')
+    '''
+    Clean and prepare given query string for Pig Latin conversion.
+    '''
     query_str = urllib.parse.unquote_plus(plq_str)
-    query_str = escape(query_str)
 
-    query_str = re.sub(r'[^\w\s]', '', query_str)
-    word_list = re.split(r'\s', query_str)
-
+    word_list = re.findall(r'\w+', query_str)
     pig_latin_list = []
-
     for word in word_list:
         pig_latin_list.append(convertToPigLatin(word))
 
-    return jsonify(data={'plq': query_str, 'result': ' '.join(pig_latin_list)})
+    template = re.sub(r'\w+', '{}', query_str)
+    return jsonify(data={
+        'plq': query_str,
+        'result': template.format(*pig_latin_list)
+    })
