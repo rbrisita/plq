@@ -15,7 +15,8 @@ def arrangeConsonantWord(word):
         if letter.upper() in vowel_list:
             first_letter = word[i].upper() if word[0].isupper() else word[i]
             return first_letter + word[i + 1:] + word[0:i].lower() + suffix
-    return word[1].upper() + word[2:].lower() + word[0].lower() + suffix
+    first_letter = word[1].upper() if word[0].isupper() else word[1]
+    return first_letter + word[2:].lower() + word[0].lower() + suffix
 
 
 def convertToPigLatin(word):
