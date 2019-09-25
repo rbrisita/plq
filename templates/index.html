@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Pig Latin Converter</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <form id="plq_form">
+                <div>
+                    <label class="h4" for="plq">Pig Latin Query:</label>
+                    <input class="w-100 m-2" type="text" id="plq" name="plq" required minlength="2" maxlength="255">
+                </div>
+                <div>
+                    <button class="btn-primary btn-lg m-2">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col">
+            <div>
+                <label class="h4" for="plq">Pig Latin Result:</label>
+                <p class="h4" id="plq_result"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const plq_form = document.getElementById('plq_form');
+        const plq = document.getElementById('plq');
+        const plq_result = document.getElementById('plq_result');
+
+        plq_form.addEventListener('submit', (evt) => {
+            evt.preventDefault();
+            request();
+        });
+
+        function request() {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = () => {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    const obj = JSON.parse(xhr.responseText);
+                    plq_result.textContent = `${obj.data.plq} = ${obj.data.result}`;
+                } else {
+                    plq_result.textContent = "Request failed. Please try agian.";
+                }
+
+                plq.value = '';
+            };
+
+            xhr.open('GET', `api/plq/${plq.value}`);
+            xhr.send();
+        }
+    </script>
+</body>
+
+</html>
