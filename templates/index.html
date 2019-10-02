@@ -27,7 +27,7 @@
     <div class="row">
         <div class="col">
             <div>
-                <label class="h4" for="plq">Pig Latin Result:</label>
+                <label class="h4" for="plq_result">Pig Latin Result:</label>
                 <p class="h4" id="plq_result"></p>
             </div>
         </div>
@@ -50,13 +50,13 @@
                     const obj = JSON.parse(xhr.responseText);
                     plq_result.textContent = `${obj.data.plq} = ${obj.data.result}`;
                 } else {
-                    plq_result.textContent = "Request failed. Please try agian.";
+                    plq_result.textContent = "Request failed. Please try again.";
                 }
 
                 plq.value = '';
             };
 
-            xhr.open('GET', `api/plq/${plq.value}`);
+            xhr.open('GET', `api/plq/${encodeURIComponent(plq.value)}`);
             xhr.send();
         }
     </script>
