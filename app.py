@@ -11,18 +11,25 @@ def arrangeConsonantWord(word):
     '''
     Using given word find where to re-arrange for Pig Latin.
     '''
+    zero_letter = word[0]
+    if len(word) < 2:
+        return zero_letter + suffix
+
     for i, letter in enumerate(word[1:], start=1):
         if letter.upper() in vowel_list:
-            first_letter = word[i].upper() if word[0].isupper() else word[i]
+            first_letter = letter.upper() if zero_letter.isupper() else letter
             return first_letter + word[i + 1:] + word[0:i].lower() + suffix
-    first_letter = word[1].upper() if word[0].isupper() else word[1]
-    return first_letter + word[2:].lower() + word[0].lower() + suffix
+    first_letter = word[1].upper() if zero_letter.isupper() else word[1]
+    return first_letter + word[2:].lower() + zero_letter.lower() + suffix
 
 
 def convertToPigLatin(word):
     '''
     Check if given word start with a vowel otherwise pass it on.
     '''
+    if not word.isalpha():
+        return word
+
     if word[0].upper() in vowel_list:
         return word + suffix
 
