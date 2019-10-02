@@ -19,8 +19,8 @@ print(url)
 
 response = requests.get(url)
 if response:
-    obj = response.json()
-    obj = obj['data']
-    print(f"{obj['plq']} = {obj['result']}")
+    dic = response.json()
+    dic = dic['data']
+    print(f"{dic['plq']} = {dic['result']}")
 else:
     print('An error has occurred. Please try again.')
